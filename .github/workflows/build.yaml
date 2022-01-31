@@ -1,0 +1,16 @@
+on:
+  push:
+    tags: v[1-9]*\.[1-9]*
+    branches: master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout code'
+        uses: actions/checkout@v2
+      - name: 'Build container'
+        run: make build
+      - name: 'Push container to Docker Hub'
+        env:
+          DOCKER_ACCESS_TOKEN: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+        run: make push
